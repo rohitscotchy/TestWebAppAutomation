@@ -79,11 +79,26 @@ jobs:
           pytest \
             -v \
             --tb=short \
-            --junitxml=report.xml
+            --html=report.html \
+            --self-contained-html
 
+      # ----------------------------------------
+      # 7. Check report
+      # ----------------------------------------
+      - name: Check HTML report
+        if: always()
+        run: |
+          echo "Current directory:"
+          pwd
 
+          echo "Repository files:"
+          ls -la
+
+          echo "HTML report:"
+          ls -lh report.html || true
+          
       # --------------------------------------------------
-      # 7. Upload JUnit test report
+      # 8. Upload HTML test report
       # --------------------------------------------------
       - name: Upload HTML test report
         if: always()
@@ -91,11 +106,12 @@ jobs:
         with:
           name: qa-html-report
           path: report.html
+          if-no-files-found: warn
 
 
 
       # --------------------------------------------------
-      # 8. Display test result
+      # 9. Display test result
       # --------------------------------------------------
       - name: QA Regression Result
         if: always()
