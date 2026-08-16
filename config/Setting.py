@@ -27,7 +27,7 @@ class EnvironmentConfig:
 
         Environment.QA: {
             "DATABASE_URL": "",
-            "API_URL": "https://testwebapp-qa-4bqh.onrender.com/Channel/",
+            "API_URL": "https://testwebapp-qa.onrender.com/Channel/",
 
             "precision_percentage": 0.1,
             "timeout_seconds": 30,
