@@ -1,0 +1,27 @@
+#--------Core Test Runner--------
+pytest>=8.2.0
+pytest-playwright>=0.5.0
+pytest-xdist>=3.6.1
+
+
+#------Playwright--------
+playwright>=1.44.0
+
+#------Reporting--------
+pytest-html>=4.1.1
+
+#------Test Data Handling--------
+Faker>=23.3.0
+pandas>=2.2.2
+
+#------Logging--------
+loguru>=0.7.3
+
+#------Environment Management--------
+python-dotenv>=1.0.1
+
+#------Authentication--------
+#PyJWT>=3.0.2
+
+# -----HTTP (fallback/ utility--------
+requests>=2.34.0
