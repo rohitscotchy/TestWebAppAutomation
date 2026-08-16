@@ -1,11 +1,16 @@
 import os
 from pathlib import Path
+from typing import Optional
 
-project_root = Path(__file__).parent.parent
 
+# Project root directory
+project_root = Path(__file__).resolve().parent.parent
+
+
+# Test data paths
 test_data_path = {
-    'test_module': {
-        'test_subModule': {
+    "test_module": {
+        "test_subModule": {
             "user_data": project_root / "data" / "user_data.json",
             "post_data": project_root / "data" / "post_data.json",
             "comment_data": project_root / "data" / "comment_data.json",
@@ -15,18 +20,26 @@ test_data_path = {
 }
 
 
-def get_test_data_path(service: str, module: str, test_type: str = 'basic', env_var: str = None) -> str:
+def get_test_data_path(
+    service: str,
+    module: str,
+    test_type: str = "basic",
+    env_var: Optional[str] = None,
+) -> str:
 
-    if env_var and os.getenv(env_var):
-        # use env variable override
+    # Environment variable override
+    if env_var:
         custom_path = os.getenv(env_var)
 
-        if not Path(custom_path).is_absolute():
-            return str(project_root / custom_path)
+        if custom_path:
+            custom_path = Path(custom_path)
 
-        return custom_path
+            if not custom_path.is_absolute():
+                custom_path = project_root / custom_path
 
-    # Navigate through nested directory
+            return str(custom_path)
+
+    # Navigate through nested test-data configuration
     try:
         service_path = test_data_path[service]
         module_path = service_path[module]
@@ -34,9 +47,11 @@ def get_test_data_path(service: str, module: str, test_type: str = 'basic', env_
 
     except KeyError as e:
         raise KeyError(
-            f"Test data path not found services = {service}, "
-            f"module= {module}, test_type= {test_type}"
-            f"Missing key:{e}"
-        )
+            f"Test data path not found: "
+            f"service={service}, "
+            f"module={module}, "
+            f"test_type={test_type}, "
+            f"missing_key={e}"
+        ) from e
 
-    return str(project_root / related_path)
+    return str(related_path)

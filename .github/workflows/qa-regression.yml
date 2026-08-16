@@ -1,0 +1,105 @@
+name: QA Regression
+
+on:
+  push:
+    branches:
+      - main
+
+  pull_request:
+    branches:
+      - main
+
+  workflow_dispatch:
+
+jobs:
+  regression:
+    name: API Regression Tests
+    runs-on: ubuntu-latest
+
+    env:
+      Test_Env: qa
+      # AUTH_TOKEN: ${{ secrets.AUTH_TOKEN }}
+      # CLIENT_ID: ${{ secrets.CLIENT_ID }}
+
+    steps:
+
+      # --------------------------------------------------
+      # 1. Checkout automation repository
+      # --------------------------------------------------
+      - name: Checkout automation code
+        uses: actions/checkout@v4
+
+
+      # --------------------------------------------------
+      # 2. Setup Python
+      # --------------------------------------------------
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+          cache-dependency-path: requirements.txt
+
+
+      # --------------------------------------------------
+      # 3. Install Python dependencies
+      # --------------------------------------------------
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+
+          if [ -f requirements.txt ]; then
+            pip install -r requirements.txt
+          else
+            pip install pytest pytest-playwright playwright
+          fi
+
+
+      # --------------------------------------------------
+      # 4. Install Playwright browsers
+      # --------------------------------------------------
+      - name: Install Playwright browsers
+        run: |
+          python -m playwright install --with-deps
+
+
+      # --------------------------------------------------
+      # 5. Display test environment
+      # --------------------------------------------------
+      - name: Display test environment
+        run: |
+          echo "Test Environment: $Test_Env"
+
+
+      # --------------------------------------------------
+      # 6. Run QA regression tests
+      # --------------------------------------------------
+      - name: Run QA regression tests
+        run: |
+          pytest \
+            -v \
+            --tb=short \
+            --junitxml=report.xml
+
+
+      # --------------------------------------------------
+      # 7. Upload JUnit test report
+      # --------------------------------------------------
+      - name: Upload HTML test report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: qa-html-report
+          path: report.html
+
+
+
+      # --------------------------------------------------
+      # 8. Display test result
+      # --------------------------------------------------
+      - name: QA Regression Result
+        if: always()
+        run: |
+          echo "======================================"
+          echo "       QA REGRESSION COMPLETED"
+          echo "======================================"
