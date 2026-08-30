@@ -18,8 +18,8 @@ jobs:
 
     env:
       Test_Env: qa
-      # AUTH_TOKEN: ${{ secrets.AUTH_TOKEN }}
-      # CLIENT_ID: ${{ secrets.CLIENT_ID }}
+      AUTH_TOKEN: ${{ secrets.API_BEARER_TOKEN }}
+      CLIENT_ID: ${{ secrets.CLIENT_ID }}
 
     steps:
 
