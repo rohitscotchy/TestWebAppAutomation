@@ -81,6 +81,8 @@ jobs:
             exit 1
           fi
 
+          echo "AUTH_TOKEN character length: ${#AUTH_TOKEN}"
+          echo "CLIENT_ID character length: ${#CLIENT_ID}"
           echo "Environment variables validated successfully."
 
 

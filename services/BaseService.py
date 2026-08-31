@@ -26,7 +26,10 @@ def api_request_context(
     }
 
     if api_token:
-        headers["Authorization"] = f"Bearer {api_token}"
+        if api_token.startswith("Bearer "):
+            headers["Authorization"] = api_token
+        else:
+            headers["Authorization"] = f"Bearer {api_token}"
 
 
     if client_id:
