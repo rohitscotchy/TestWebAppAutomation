@@ -1,5 +1,5 @@
 from typing import Generator
-
+import os
 import pytest
 from playwright.sync_api import (
     Playwright,
@@ -16,8 +16,11 @@ def api_request_context(
 
     config = settings.get_config()
 
-    api_token = config.get("auth_token")
-    client_id = config.get("client_id")
+    # api_token = config.get("auth_token")
+    # client_id = config.get("client_id")
+    api_token = os.getenv('auth_token')
+    client_id = os.getenv('CLIENT_ID')
+
     base_url = config.get("API_URL")
 
     headers = {
@@ -27,8 +30,9 @@ def api_request_context(
     if api_token:
         headers["Authorization"] = f"Bearer {api_token}"
 
+
     if client_id:
-        headers["Client_id"] = client_id
+        headers["client-id"] = client_id
 
     request_context = playwright.request.new_context(
         base_url=base_url,
@@ -38,6 +42,7 @@ def api_request_context(
 
     print(f"Environment: {settings.env.value}")
     print(f"Base URL: {base_url}")
+    print(f"Headers: {headers}")
 
     yield request_context
 

@@ -15,7 +15,7 @@ class EnvironmentConfig:
 
         Environment.LOCAL: {
             "DATABASE_URL": "sqlite:///./local.db",
-            "API_URL": "http://127.0.0.1:8000/Channel/",
+            "API_URL": "https://testwebapp-qa.onrender.com/Channel/",
 
             "precision_percentage": 0.1,
             "timeout_seconds": 30,
