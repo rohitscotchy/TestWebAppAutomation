@@ -16,10 +16,8 @@ def api_request_context(
 
     config = settings.get_config()
 
-    # api_token = config.get("auth_token")
-    # client_id = config.get("client_id")
-    api_token = os.getenv('auth_token')
-    client_id = os.getenv('CLIENT_ID')
+    api_token = config.get("auth_token")
+    client_id = config.get("client_id")
 
     base_url = config.get("API_URL")
 

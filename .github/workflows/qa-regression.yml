@@ -88,6 +88,11 @@ jobs:
       # 6. Run QA regression tests
       # --------------------------------------------------
       - name: Run QA regression tests
+        env:
+          Test_Env: qa
+          AUTH_TOKEN: ${{ secrets.API_BEARER_TOKEN }}
+          API_BEARER_TOKEN: ${{ secrets.API_BEARER_TOKEN }}
+          CLIENT_ID: ${{ secrets.CLIENT_ID }}
         run: |
           pytest \
             -v \

@@ -1,6 +1,9 @@
 import os
 from enum import Enum
 from typing import Dict, Any
+from dotenv import load_dotenv
+
+load_dotenv(override=True)
 
 
 class Environment(str, Enum):
@@ -72,14 +75,17 @@ class Setting:
 
         config = EnvironmentConfig.get_config(self.env).copy()
 
-        config["auth_token"] = os.getenv(
-            "AUTH_TOKEN",
-            os.getenv("Auth_bearer")
+        config["auth_token"] = (
+            os.getenv("AUTH_TOKEN")
+            or os.getenv("API_BEARER_TOKEN")
+            or os.getenv("Auth_bearer")
+            or os.getenv("auth_token")
         )
 
-        config["client_id"] = os.getenv(
-            "CLIENT_ID",
-            os.getenv("Client_id")
+        config["client_id"] = (
+            os.getenv("CLIENT_ID")
+            or os.getenv("Client_id")
+            or os.getenv("client_id")
         )
 
         return config
